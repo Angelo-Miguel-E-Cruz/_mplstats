@@ -1,11 +1,18 @@
-import Players from "./components/players"
+import Records from "./components/records"
+import Match from "./components/match"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
 
   return (
-    <>
-      <Players />
-    </>
+    <main className="min-h-screen bg-gradient-to-br from-background via-card to-background p-4">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Match />} />
+          <Route path="/records/:id" element={<Records />} />
+        </Routes>
+      </BrowserRouter>
+    </main>
   )
 }
 

@@ -14,7 +14,7 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "dev": "npx ts-node index.ts",
+    "dev": "npx nodemon --exec ts-node index.ts",
     "start": "ts-node index.ts",
     "build": "tsc",
     "prod": "node dist/index.js"
