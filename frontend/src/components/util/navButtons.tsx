@@ -2,20 +2,21 @@ import { Link } from "react-router-dom";
 
 interface NavProps {
   gameCount: string[],
-  fetchRecords: (value: number) => Promise<void>
+  match: number,
+  viewMatch: (value: number) => void
 }
 
-export default function NavButtons({ gameCount, fetchRecords }: NavProps) {
+export default function NavButtons({ gameCount, match, viewMatch }: NavProps) {
   return (
-    <div className="w-fit justify-self-end-safe space-x-2">
-      <Link to='/' className="bg-gray-400">
+    <div className="w-full max-w-md justify-self-end-safe grid grid-cols-4 gap-2">
+      <Link to='/' className="px-2 py-1 w-10 rounded-sm">
         Back
       </Link>
-      <button className="bg-gray-400" onClick={() => fetchRecords(0)}>
+      <button className={`px-2 py-1 w-full rounded-sm ${match === 0 ? 'bg-primary text-primary-foreground' : ''}`} onClick={() => viewMatch(0)}>
         All
       </button>
       {gameCount.map((game) => (
-        <button className="bg-gray-400" onClick={() => fetchRecords(Number(game.charAt(5)))}>
+        <button className={`px-2 py-1 w-full rounded-sm ${match === Number(game.charAt(5)) ? 'bg-primary text-primary-foreground' : ''}`} onClick={() => viewMatch(Number(game.charAt(5)))}>
           {game}
         </button>
       ))}

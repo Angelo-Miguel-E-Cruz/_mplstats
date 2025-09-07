@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   Table,
   TableBody,
@@ -8,16 +8,33 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { roundOff } from "@/lib/functions"
-import type { MatchRecords, MatchAverage } from "@/lib/types"
+import type { MatchRecords, MatchAverage, KillData } from "@/lib/types"
 
 interface TableProps {
   recordType: 'individual' | 'average'
   records: MatchRecords[] | MatchAverage[]
+  kills: KillData[]
 }
 
-export default function TableStats({ recordType, records }: TableProps) {
+export default function TableStats({ recordType, records, kills }: TableProps) {
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+      {recordType === 'individual'
+        ? <CardHeader className="grid grid-cols-3">
+          <div className="flex gap-2">
+            <h1 className={`${kills[0].winner === kills[0].blue ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].blue_kills}</h1>
+            <h1>{kills[0].blue}</h1>
+          </div>
+          <div className="flex justify-center-safe gap-2 items-center">
+            {kills[0].match_time}
+          </div>
+          <div className="flex justify-end-safe gap-2">
+            <h1>{kills[0].red}</h1>
+            <h1 className={`${kills[0].winner === kills[0].red ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].red_kills}</h1>
+          </div>
+        </CardHeader>
+        : <></>
+      }
       <CardContent>
         <Table>
           <TableHeader>
@@ -87,6 +104,6 @@ export default function TableStats({ recordType, records }: TableProps) {
           </TableBody>
         </Table>
       </CardContent>
-    </Card>
+    </Card >
   )
 }

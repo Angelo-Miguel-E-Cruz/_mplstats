@@ -1,5 +1,5 @@
-import Records from "./components/records"
-import Match from "./components/match"
+import Records from "./components/pages/records"
+import Match from "./components/pages/match"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {

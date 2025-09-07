@@ -18,7 +18,7 @@ export function useRecordFunctions(id: string | undefined) {
 
       const game: Game[] = data.matches
       const gameNumber: string[] = game.map(game => game.game_num)
-      dispatch({ type: 'SET_ARRAY', payload: { array: 'gameCount', value: gameNumber } })
+      dispatch({ type: 'SET_PROPERTY', payload: { property: 'gameCount', value: gameNumber } })
     } catch (error) {
       console.error(error)
     }
@@ -33,6 +33,7 @@ export function useRecordFunctions(id: string | undefined) {
       if (!response.ok)
         throw new Error(data.error)
 
+      const kills = data.kills
       var records: MatchRecords[] | MatchAverage[]
 
       if (matchnum === 0) {
@@ -43,12 +44,17 @@ export function useRecordFunctions(id: string | undefined) {
         records = data.records
         dispatch({ type: 'SET_RECORD_TYPE', payload: 'individual' })
       }
-
-      dispatch({ type: 'SET_ARRAY', payload: { array: 'records', value: records } })
+      dispatch({ type: 'SET_PROPERTY', payload: { property: 'records', value: records } })
+      dispatch({ type: 'SET_PROPERTY', payload: { property: 'killData', value: kills } })
     } catch (error) {
       console.error(error)
     }
   }
 
-  return { state, dispatch, fetchCount, fetchRecords }
+  function viewMatch(matchnum: number) {
+    dispatch({ type: 'SET_PROPERTY', payload: { property: 'viewMatch', value: matchnum } })
+    fetchRecords(matchnum)
+  }
+
+  return { state, dispatch, fetchCount, viewMatch }
 }

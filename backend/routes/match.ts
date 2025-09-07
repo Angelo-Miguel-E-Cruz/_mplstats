@@ -45,7 +45,21 @@ export async function getMatchRecords(req: Request, res: Response) {
       throw error
     }
 
-    return res.status(200).json({ records: data })
+    query = supabase
+      .from('games')
+      .select('id, winner, match_time, blue, red, blue_kills, red_kills')
+
+    if (gameId !== "0") {
+      query = query
+        .eq('game_num', `Game ${gameId}`)
+    }
+
+    const { data: killData, error: killError } = await query
+
+    if (killError)
+      throw killError
+
+    return res.status(200).json({ records: data, kills: killData })
 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'

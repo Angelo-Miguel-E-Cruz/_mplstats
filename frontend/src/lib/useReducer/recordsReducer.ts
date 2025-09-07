@@ -4,10 +4,10 @@ export default function RecordsReducer(state: RecordState, action: RecordActions
   const { type } = action
 
   switch (type) {
-    case 'SET_ARRAY':
+    case 'SET_PROPERTY':
       return {
         ...state,
-        [action.payload.array]: action.payload.value
+        [action.payload.property]: action.payload.value
 
       }
     case "SET_RECORD_TYPE":
