@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import { roundOff } from "@/lib/functions"
 import type { MatchRecords, MatchAverage, KillData } from "@/lib/types"
+import { useNavigate } from "react-router-dom"
 
 interface TableProps {
   recordType: 'individual' | 'average'
@@ -17,18 +18,24 @@ interface TableProps {
 }
 
 export default function TableStats({ recordType, records, kills }: TableProps) {
+  const nav = useNavigate()
+
+  const handleTeamClick = (teamId: string) => {
+    nav(`/team/${teamId}`)
+  }
+
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-border/50">
       {recordType === 'individual'
         ? <CardHeader className="grid grid-cols-3">
-          <div className="flex gap-2">
+          <div className="flex gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].blue_team_id)}>
             <h1 className={`${kills[0].winner === kills[0].blue ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].blue_kills}</h1>
             <h1>{kills[0].blue}</h1>
           </div>
           <div className="flex justify-center-safe gap-2 items-center">
             {kills[0].match_time}
           </div>
-          <div className="flex justify-end-safe gap-2">
+          <div className="flex justify-end-safe gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].red_team_id)}>
             <h1>{kills[0].red}</h1>
             <h1 className={`${kills[0].winner === kills[0].red ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].red_kills}</h1>
           </div>

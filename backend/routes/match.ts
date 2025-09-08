@@ -46,8 +46,8 @@ export async function getMatchRecords(req: Request, res: Response) {
     }
 
     query = supabase
-      .from('games')
-      .select('id, winner, match_time, blue, red, blue_kills, red_kills')
+      .from('games_with_team')
+      .select('*')
 
     if (gameId !== "0") {
       query = query
@@ -57,7 +57,7 @@ export async function getMatchRecords(req: Request, res: Response) {
     const { data: killData, error: killError } = await query
 
     if (killError)
-      throw killError
+      throw error
 
     return res.status(200).json({ records: data, kills: killData })
 
@@ -69,7 +69,6 @@ export async function getMatchRecords(req: Request, res: Response) {
 
 export async function getMatchCount(req: Request, res: Response) {
   try {
-
     const matchId = req.params.matchId
     const { data, error } = await supabase
       .from("match_with_game_records")

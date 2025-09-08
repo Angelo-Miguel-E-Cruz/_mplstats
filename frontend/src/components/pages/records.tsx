@@ -10,9 +10,10 @@ export default function Records() {
   const { state, viewMatch, fetchCount } = useRecordFunctions(id)
 
   useEffect(() => {
+    if (!id) return
     fetchCount()
     viewMatch(0)
-  }, [])
+  }, [id])
 
   return (
     <div className="flex flex-col gap-2">
