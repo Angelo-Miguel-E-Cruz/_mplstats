@@ -24,22 +24,39 @@ export default function TableStats({ recordType, records, kills }: TableProps) {
     nav(`/team/${teamId}`)
   }
 
+  const countWins = (records: KillData[], team: string) => {
+    return records.filter((match) => match.winner === team).length
+  }
+
   return (
     <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-      {recordType === 'individual'
-        ? <CardHeader className="grid grid-cols-3">
-          <div className="flex gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].blue_team_id)}>
-            <h1 className={`${kills[0].winner === kills[0].blue ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].blue_kills}</h1>
-            <h1>{kills[0].blue}</h1>
-          </div>
-          <div className="flex justify-center-safe gap-2 items-center">
-            {kills[0].match_time}
-          </div>
-          <div className="flex justify-end-safe gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].red_team_id)}>
-            <h1>{kills[0].red}</h1>
-            <h1 className={`${kills[0].winner === kills[0].red ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].red_kills}</h1>
-          </div>
-        </CardHeader>
+      {kills.length > 0
+        ? recordType === 'individual'
+          ? <CardHeader className="grid grid-cols-3">
+            <div className="flex gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].blue_team_id)}>
+              <h1 className={`${kills[0].winner === kills[0].blue ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].blue_kills}</h1>
+              <h1>{kills[0].blue}</h1>
+            </div>
+            <div className="flex justify-center-safe gap-2 items-center">
+              {kills[0].match_time}
+            </div>
+            <div className="flex justify-end-safe gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].red_team_id)}>
+              <h1>{kills[0].red}</h1>
+              <h1 className={`${kills[0].winner === kills[0].red ? 'text-green-700' : 'text-foreground'} font-bold`}>{kills[0].red_kills}</h1>
+            </div>
+          </CardHeader>
+          : <CardHeader className="grid grid-cols-2" onClick={() => handleTeamClick(kills[0].blue_team_id)}>
+            <div className="flex gap-2 cursor-pointer">
+              <h1 className={`${countWins(kills, kills[0].red) < countWins(kills, kills[0].blue) ? 'text-green-700' : 'text-foreground'} font-bold`}>
+                {countWins(kills, kills[0].blue)}</h1>
+              <h1>{kills[0]?.blue}</h1>
+            </div>
+            <div className="flex justify-end-safe gap-2 cursor-pointer" onClick={() => handleTeamClick(kills[0].red_team_id)}>
+              <h1>{kills[0]?.red}</h1>
+              <h1 className={`${countWins(kills, kills[0].red) > countWins(kills, kills[0].blue) ? 'text-green-700' : 'text-foreground'} font-bold`}>
+                {countWins(kills, kills[0].red)}</h1>
+            </div>
+          </CardHeader>
         : <></>
       }
       <CardContent>

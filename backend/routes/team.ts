@@ -22,3 +22,23 @@ export async function getTeamInfo(req: Request, res: Response) {
     return res.status(400).json({ error: errorMessage })
   }
 }
+
+export async function getMatchHistory(req: Request, res: Response) {
+  try {
+    const team_name = req.params.teamName
+    const { data, error } = await supabase
+      .from("matches")
+      .select('*')
+      .or(`team_one_short.eq.${team_name},team_two_short.eq.${team_name}`)
+
+    if (error) {
+      throw error
+    }
+
+    return res.status(200).json({ history: data })
+
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    return res.status(400).json({ error: errorMessage })
+  }
+}

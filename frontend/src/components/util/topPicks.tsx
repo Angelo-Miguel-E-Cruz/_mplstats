@@ -9,7 +9,6 @@ interface TopPicksProps {
 
 export default function TopPicks({ playerHeroStats }: TopPicksProps) {
   return (
-
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
       {playerHeroStats.map((player) => (
         <Card className="bg-gradient-to-br from-card to-card/50 border-border/50">

@@ -48,6 +48,7 @@ export async function getMatchRecords(req: Request, res: Response) {
     query = supabase
       .from('games_with_team')
       .select('*')
+      .eq('match_id', matchId)
 
     if (gameId !== "0") {
       query = query
